@@ -1,5 +1,8 @@
 // 定义LED引脚，ESP32通常板载LED连接在GPIO 2
 const int ledPin = 2; 
+unsigned long previousMillis = 0;
+const unsigned long interval = 500; 
+bool ledState = LOW;
 
 void setup() {
   // 初始化串口通信，设置波特率为115200
@@ -9,11 +12,13 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(ledPin, HIGH);  // 点亮LED
-  Serial.println("LED ON");    // 串口输出提示
-  delay(1000);                 // 保持1秒（1000毫秒）
-  
-  digitalWrite(ledPin, LOW);   // 熄灭LED
-  Serial.println("LED OFF");   // 串口输出提示
-  delay(1000);                 // 保持1秒
+   unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval)
+  {
+    previousMillis = currentMillis;
+
+    ledState = !ledState;
+    digitalWrite(ledPin, ledState);
+  }
 }
+
