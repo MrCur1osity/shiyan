@@ -12,7 +12,7 @@ int dutyCycle = 0;              // 当前亮度
 int fadeDirection = 1;          // 1：渐亮；-1：渐暗
 unsigned long lastFadeTime = 0;
 int speed=1;
-const int delaytime[3]={10,20,30};
+const int delaytime[3]={1,10,20};
 void setup() {
   Serial.begin(115200);
   delay(1000);
@@ -58,6 +58,5 @@ void loop() {
     }
 
     ledcWrite(LED_PIN, dutyCycle);
-  }
-  delay(100);   
+  } 
 }
