@@ -3,9 +3,6 @@
 
 #define LED_PIN 2
 
-const char* ssid = "Curious";
-const char* password = "Phq120621!";
-
 const int freq = 5000;       // PWM频率
 const int resolution = 8;    // 8位PWM，占空比0~255
 
@@ -96,18 +93,15 @@ void setup() {
   ledcAttach(LED_PIN, freq, resolution);
   ledcWrite(LED_PIN, 0);
 
-  // 连接 WiFi
-  WiFi.begin(ssid, password);
-  Serial.print("连接WiFi");
+  const char* ap_ssid = "ESP32-LAB151";
+  const char* ap_pass = "12345678"; // 至少8位
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(ap_ssid, ap_pass);
 
-  Serial.println("\n连接成功");
-  Serial.print("访问地址: http://");
-  Serial.println(WiFi.localIP());
+  Serial.println("AP已开启");
+  Serial.print("AP IP: ");
+  Serial.println(WiFi.softAPIP()); // 通常 192.168.4.1
 
   // 注册网页路由
   server.on("/", handleRoot);

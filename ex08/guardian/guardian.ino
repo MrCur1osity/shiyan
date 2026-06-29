@@ -8,8 +8,6 @@
 #define TOUCH_DEBOUNCE 80      // 触摸防抖时间，单位：ms
 #define BLINK_INTERVAL 100     // 报警闪烁间隔，单位：ms
 
-const char* ssid = "Curious";
-const char* password = "Phq120621!";
 
 WebServer server(80);
 
@@ -177,17 +175,15 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
 
-  WiFi.begin(ssid, password);
+  const char* ap_ssid = "ESP32-LAB151";
+  const char* ap_pass = "12345678"; // 至少8位
 
-  Serial.print("连接WiFi");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(ap_ssid, ap_pass);
 
-  Serial.println("\n连接成功");
-  Serial.print("访问地址: http://");
-  Serial.println(WiFi.localIP());
+  Serial.println("AP已开启");
+  Serial.print("AP IP: ");
+  Serial.println(WiFi.softAPIP()); // 通常 192.168.4.1
 
   server.on("/", handleRoot);
   server.on("/arm", handleArm);
